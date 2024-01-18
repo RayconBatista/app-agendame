@@ -1,63 +1,135 @@
 <template>
-    <section class="bg-gray-50 dark:bg-gray-900">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-                Flowbite
-            </a>
-            <div
-                class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                        Create and account
-                    </h1>
-                    <form class="space-y-4 md:space-y-6" action="#">
-                        <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                                email</label>
-                            <input type="email" name="email" id="email"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="name@company.com">
-                        </div>
-                        <div>
-                            <label for="password"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input type="password" name="password" id="password" placeholder="••••••••"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            >
-                        </div>
-                        <div>
-                            <label for="confirm-password"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
-                                password</label>
-                            <input type="confirm-password" name="confirm-password" id="confirm-password"
-                                placeholder="••••••••"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            >
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                                <input id="terms" aria-describedby="terms" type="checkbox"
-                                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                                >
-                            </div>
-                            <div class="ml-3 text-sm">
-                                <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a
-                                        class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                                        href="#">Terms and Conditions</a></label>
-                            </div>
-                        </div>
-                        <button type="submit"
-                            class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create
-                            an account</button>
-                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            Already have an account? 
-                            
-                            <router-link class="font-medium text-primary-600 hover:underline dark:text-primary-500" :to="{ name: 'login' }">Login here</router-link>
-                        </p>
-                    </form>
-                </div>
+    <a href="#" class="flex m-2 justify-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+        <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
+        Flowbite
+    </a>
+    <div class="p-6 space-y-2 md:space-y-4 sm:p-8">
+        <h1 class="text-xl font-bold text-center leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            Faça o seu cadastro
+        </h1>
+
+        <form class="space-y-4 md:space-y-6" @submit.stop.prevent="submit">
+            <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                    name
+                </label>
+                <input type="text" id="name"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    :class="[
+                        'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                        { 'focus:border-blue border-2 dark:border-red-500': errors.name }
+                    ]" placeholder="Fulano de tal" v-model="name" :error-messages="errors.name">
+                <span class="text-red-500" v-if="!!errors">{{ errors.name }}</span>
             </div>
-        </div>
-    </section>
+            <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                    email
+                </label>
+                <input type="email" id="email"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    :class="[
+                        'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                        { 'focus:border-blue border-2 dark:border-red-500': errors.email }
+                    ]" placeholder="name@company.com" v-model="email" :error-messages="errors.email">
+                <span class="text-red-500" v-if="!!errors">{{ errors.email }}</span>
+            </div>
+            <div>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                <input type="password" id="password" v-model="password" :error-messages="errors.password"
+                    placeholder="••••••••" :class="[
+                        'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                        { 'focus:border-blue border-2 dark:border-red-500': errors.password }
+                    ]">
+                <span class="text-red-500" v-if="!!errors">{{ errors.password }}</span>
+            </div>
+            <button type="submit" :disabled="isSubmitting"
+                class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+
+                <div v-if="isSubmitting" class="flex items-center justify-center">
+                    <Spinner :loading="isSubmitting" />
+                    <span class="ml-2">Entrando....</span>
+                </div>
+
+                <span v-else>Entrar</span>
+
+            </button>
+            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                Tem conta?
+                <router-link class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    :to="{ name: 'login' }">Acesse o Login</router-link>
+            </p>
+        </form>
+    </div>
 </template>
+<script>
+import { useStore } from "vuex";
+import { notify } from "@kyvg/vue3-notification";
+import { useRouter, useRoute } from "vue-router";
+import { useField, useForm } from 'vee-validate';
+import { object, string } from 'yup'
+import Spinner from '@/ui/components/Spinner.vue';
+
+export default {
+    components: {
+        Spinner
+    },
+    setup() {
+        const store = useStore();
+        const router = useRouter();
+
+        const schema = object({
+            name: string().required().min(3).label('Nome Completo'),
+            email: string().required().email().label('E-mail'),
+            password: string().required().min(6).label('Senha')
+        })
+
+        const { handleSubmit, errors, isSubmitting } = useForm({
+            validationSchema: schema,
+            initialValues: {
+                name: '',
+                email: '',
+                password: ''
+            }
+        })
+
+        const submit = handleSubmit(async (values) => {
+            try {
+                await store
+                    .dispatch("register", {
+                        name: values.name,
+                        email: values.email,
+                        password: values.password
+                    }).then(() => {
+                        notify({
+                            title: "Deu certo!",
+                            type: "success",
+                        });
+                    }).finally(() => {
+                        router.push({ name: "login" })
+                    })
+            } catch (e) {
+                let msgError = "Falha na requisição";
+                notify({
+                    title: "Falha ao autenticar",
+                    text: msgError,
+                    type: "warn",
+                });
+            }
+        })
+
+        const { value: name } = useField('name')
+        const { value: email } = useField('email')
+        const { value: password } = useField('password')
+
+        return {
+            name,
+            email,
+            password,
+            errors,
+            submit,
+            isSubmitting
+        }
+    }
+}
+
+</script>

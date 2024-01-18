@@ -1,13 +1,14 @@
-import '@/ui/assets/css/tailwind.css';
 import { createApp } from 'vue';
+
+// Local Imports
 import App from './App.vue';
 import store from '@/store';
-import router from '@/router'
-import Notifications from '@kyvg/vue3-notification';
-import { setLocale } from 'yup';
-import { pt } from 'yup-locale-pt';
+import router from '@/router';
 
-setLocale(pt)
+// Externals Imposts libs
+import '@/ui/assets/css/tailwind.css';
+import '@/config/plugins/yup';
+import Notifications from '@kyvg/vue3-notification';
 
 createApp(App)
     .use(router)
