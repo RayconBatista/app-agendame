@@ -28,6 +28,17 @@ export default [
     ]
   },
   {
+    path: '/esqueci-minha-senha',
+    component: () => import('@/ui/layouts/Auth.vue'),
+    children: [
+      {
+        path: '',
+        name: 'forgotPassword',
+        component: () => import('@/ui/views/Auth/ForgotPassword.vue')
+      }
+    ],
+  },
+  {
     path: '/verificar-email',
     component: () => import('@/ui/layouts/Auth.vue'),
     children: [

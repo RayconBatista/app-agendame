@@ -7,7 +7,7 @@ export default ({
     },
 
     async register({ dispatch }, params) {
-        return await AuthService.register(params).then((res) => console.log(resp.data))
+        return await AuthService.register(params).then((resp) => console.log(resp.data))
     },
 
     async getMe({ commit }) {
