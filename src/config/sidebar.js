@@ -4,6 +4,7 @@ export default {
             title: 'Dashboard',
             icon: 'fa-solid fa-dashboard',
             to: 'dashboard'
+            
         },
     ]
 }
