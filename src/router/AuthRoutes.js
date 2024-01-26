@@ -1,4 +1,4 @@
-// import VerifyEmail from '@/ui/views/Auth/VerifyEmail.vue'
+import { redirectIfAuthenticated } from './guards';
 export default [
   {
     path: '/login',
@@ -6,6 +6,7 @@ export default [
       {
         path: '/login',
         component: () => import('@/ui/layouts/Auth.vue'),
+        beforeEnter: redirectIfAuthenticated,
         children: [
           {
             path: '',
@@ -30,6 +31,7 @@ export default [
   {
     path: '/esqueci-minha-senha',
     component: () => import('@/ui/layouts/Auth.vue'),
+    beforeEnter: redirectIfAuthenticated,
     children: [
       {
         path: '',

@@ -16,13 +16,25 @@
                     </button>
                     <router-link to="/" class="flex ml-2 md:mr-24">
                         <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" :alt="title" :title="title" />
-                        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">{{
-                            title }}</span>
+                        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                            {{ title }}</span>
                     </router-link>
                 </div>
                 <div class="flex items-center">
-                    <div class="flex items-center ml-3">
-                        <div>
+                    <div class="items-center ml-3">
+                        <div class="flex items-center">
+                            <!-- <button class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                testar
+                            </button> -->
+                            <!-- <button
+                                class="mr-4 px-3 py-1.5 text-sm dark:text-white bg-blue-600 hover:bg-blue-700 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
+                                UPGRADE
+                            </button> -->
+
+                            <router-link v-if="!user?.has_subscription" :to="{ name: 'site.plans' }"
+                                class="mr-4 px-3 py-1.5 text-sm dark:text-white bg-blue-600 hover:bg-blue-700 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                                role="menuitem">UPGRADE</router-link>
+
                             <button type="button" @click="openProfileMenu"
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
                                 <span class="sr-only">Open user menu</span>
@@ -82,7 +94,7 @@ export default {
         const loading = ref(false);
         const user = computed(() => store.state.auth.me);
         const title = import.meta.env.VITE_APP_NAME;
-        
+
 
         onMounted(() => {
             store.dispatch('getMe')

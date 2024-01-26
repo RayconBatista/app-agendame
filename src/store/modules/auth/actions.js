@@ -1,8 +1,9 @@
 import AuthService from '@/infra/services/auth.service'
 export default ({
-    async auth({ dispatch }, params) {
+    async auth({ dispatch, commit }, params) {
         return await AuthService.auth(params).then(() => {
             dispatch('getMe')
+            commit('CHANGE_AUTHENTICATED', true)
         })
     },
 
