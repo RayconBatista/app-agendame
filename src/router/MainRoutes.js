@@ -4,6 +4,7 @@ export default [
   {
     path: '/',
     component: () => import('@/ui/layouts/Default.vue'),
+    beforeEnter: redirectIfNotAuthenticated,
     children: [
       {
         name: 'dashboard',

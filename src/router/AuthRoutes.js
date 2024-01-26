@@ -1,4 +1,4 @@
-import { redirectIfAuthenticated } from './guards';
+import { redirectIfAuthenticated, redirectIfNotAuthenticated } from './guards';
 export default [
   {
     path: '/login',
