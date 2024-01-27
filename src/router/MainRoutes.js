@@ -9,6 +9,7 @@ export default [
       {
         name: 'dashboard',
         path: 'dashboard',
+        
         meta: {
           title: 'Dashboard',
           public: true
