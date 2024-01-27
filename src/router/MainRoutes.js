@@ -2,26 +2,16 @@ import { redirectIfAuthenticated, redirectIfNotAuthenticated } from './guards';
 
 export default [
   {
-    path: '/',
+    path: '/app',
     component: () => import('@/ui/layouts/Default.vue'),
     beforeEnter: redirectIfNotAuthenticated,
     children: [
       {
         name: 'dashboard',
-        path: '/',
+        path: 'dashboard',
         component: () => import('@/ui/views/Dashboard/Index.vue')
       },
     ]
-  },
-  {
-    name: 'site.plans',
-    path: '/plans',
-    component: () => import('@/ui/layouts/Default.vue'),
-    meta: {
-      title: 'Planos',
-      public: true
-    },
-    component: () => import('@/ui/views/Site/Plans/Index.vue')
   },
   {
     path: '/assinatura/sucesso',
@@ -33,4 +23,5 @@ export default [
     name: 'subscriptionCancel',
     component: () => import('@/ui/views/Subscription/Cancel.vue'),
   },
+  
 ]
