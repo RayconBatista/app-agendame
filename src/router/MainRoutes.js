@@ -9,6 +9,10 @@ export default [
       {
         name: 'dashboard',
         path: 'dashboard',
+        meta: {
+          title: 'Dashboard',
+          public: true
+      },
         component: () => import('@/ui/views/Dashboard/Index.vue')
       },
     ]
