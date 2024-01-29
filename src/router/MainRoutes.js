@@ -9,12 +9,30 @@ export default [
       {
         name: 'dashboard',
         path: 'dashboard',
-        
+        component: () => import('@/ui/views/Platform/Dashboard/Index.vue'),
         meta: {
           title: 'Dashboard',
           public: true
+        }
       },
-        component: () => import('@/ui/views/Dashboard/Index.vue')
+      {
+        path: 'planos',
+        children: [
+          {
+            name: 'plans',
+            path: '',
+            component: () => import('@/ui/views/Platform/Plans/Index.vue'),
+            meta: {
+              title: 'Planos',
+              public: true
+            },
+          },
+          {
+            name: 'single.plan',
+            path: ':id',
+            component: () => import('@/ui/views/Platform/Plans/Single.vue'),
+          }
+        ]
       },
     ]
   },
@@ -28,5 +46,5 @@ export default [
     name: 'subscriptionCancel',
     component: () => import('@/ui/views/Subscription/Cancel.vue'),
   },
-  
+
 ]

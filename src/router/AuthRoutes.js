@@ -2,20 +2,19 @@ import { redirectIfAuthenticated, redirectIfNotAuthenticated } from './guards';
 export default [
   {
     path: '/login',
+    component: () => import('@/ui/layouts/Auth.vue'),
+    beforeEnter: redirectIfAuthenticated,
+    meta: {
+      title: 'Login',
+      public: true
+    },
     children: [
       {
-        path: '/login',
-        component: () => import('@/ui/layouts/Auth.vue'),
-        beforeEnter: redirectIfAuthenticated,
-        children: [
-          {
-            path: '',
-            name: 'login',
-            component: () => import('@/ui/views/Auth/Login.vue')
-          }
-        ],
-      },
-    ]
+        path: '',
+        name: 'login',
+        component: () => import('@/ui/views/Auth/Login.vue')
+      }
+    ],
   },
   {
     path: '/cadastrar',

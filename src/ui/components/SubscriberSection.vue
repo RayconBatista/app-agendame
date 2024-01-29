@@ -59,7 +59,7 @@ export default {
     },
     setup() {
         const store = useStore();
-        const plans = computed(() => store.state.plan.plans?.data);
+        const plans = computed(() => store.getters.getPublishes);
 
         const frequency = ref('monthly')
         const isYearly = computed(() => frequency.value === 'yearly');
@@ -67,6 +67,7 @@ export default {
         const { state, execute, isLoading } = useAsyncState(() => store.dispatch('getPlans'))
 
         onMounted(() => {
+            console.log(plans)
             execute()
         })
 
