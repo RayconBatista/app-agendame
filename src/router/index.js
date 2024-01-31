@@ -9,6 +9,10 @@ const router = createRouter({
     routes: [
         {
             path: '/:pathMatch(.*)*',
+            meta: {
+                title: 'Error 404',
+                public: true
+            },
             component: () => import('@/ui/views/Errors/Error404.vue')
         },
         ...AuthRoutes,

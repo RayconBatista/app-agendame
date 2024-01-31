@@ -22,4 +22,16 @@ export default ({
                 commit('GET_PLAN_DETAIL', response.data)
             })
     },
+
+    async updatePlan({ commit }, params) {
+        await PlansService
+            .updatePlan(params.id, params)
+            .then(response => {
+                commit('GET_PLAN_DETAIL', response.data)
+            })
+    },
+    async destroyPlan({ commit }, id) {
+        console.log({"ID": id})
+        await PlansService.destroy(id)
+    },
 })

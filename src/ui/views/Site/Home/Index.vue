@@ -4,7 +4,8 @@
         <div class="w-full md:w-1/2 px-4 flex items-center">
           <div class="text-left">
             <h2 class="text-2xl font-bold mb-2">Sistema para barbearia completo e descomplicado</h2>
-            <p class="text-gray-700">FAÇA SEU NEGÓCIO DECOLAR</p>
+            <!-- <p class="text-gray-700">FAÇA SEU NEGÓCIO DECOLAR</p> -->
+            <router-link class="text-gray-700" :to="{ name: 'site.pricing'}">FAÇA SEU NEGÓCIO DECOLAR</router-link>
           </div>
         </div>
         <!-- Coluna de imagem -->
