@@ -1,8 +1,8 @@
 import AuthService from '@/infra/services/auth.service'
 export default ({
     async auth({ dispatch, commit }, params) {
-        return await AuthService.auth(params).then(() => {
-            dispatch('getMe')
+        return await AuthService.auth(params).then((resp) => {
+            commit('GET_ME', resp.data)
             commit('CHANGE_AUTHENTICATED', true)
         })
     },
@@ -12,13 +12,17 @@ export default ({
     },
 
     async getMe({ commit }) {
-        commit('CHANGE_LOADING', true)
-
-        await AuthService.getMe()
-            .then(user => {
-                commit('GET_ME', user.data)
-            })
-            .finally(() => commit('CHANGE_LOADING', false))
+        try {
+            commit('CHANGE_LOADING', true);
+            const user = await AuthService.getMe();
+            commit('GET_ME', user?.data);
+            return user;
+        } catch (error) {
+            // Lidar com erros ao obter informações do usuário
+            throw error;
+        } finally {
+            commit('CHANGE_LOADING', false);
+        }
     },
 
     // logout({ commit }) {

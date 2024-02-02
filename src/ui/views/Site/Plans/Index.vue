@@ -53,7 +53,6 @@ export default {
         }
 
         const selectPlan = async (planId) => {
-            // console.log(isYearly)
             const params = {
                 plan_id: planId,
                 frequency: frequency.value

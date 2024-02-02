@@ -1,8 +1,5 @@
 export default ({
-    me: {
-        name: '',
-        email: '',
-    },
+    me: null,
     loading: false,
     loggedIn: false
 })

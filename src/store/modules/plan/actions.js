@@ -31,7 +31,6 @@ export default ({
             })
     },
     async destroyPlan({ commit }, id) {
-        console.log({"ID": id})
         await PlansService.destroy(id)
     },
 })

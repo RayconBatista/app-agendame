@@ -12,8 +12,50 @@ export default [
         component: () => import('@/ui/views/Platform/Dashboard/Index.vue'),
         meta: {
           title: 'Dashboard',
-          public: true
+          public: true,
         }
+      },
+      {
+        path: 'estabelecimentos',
+        children: [
+          {
+            name: 'establishments.index',
+            path: '',
+            component: () => import('@/ui/views/Platform/Establishments/Index.vue'),
+            meta: {
+              title: 'Estabelecimentos',
+              public: true,
+            },
+          },
+        ]
+      },
+      {
+        path: 'clientes',
+        children: [
+          {
+            name: 'clients.index',
+            path: '',
+            component: () => import('@/ui/views/Platform/Clients/Index.vue'),
+            meta: {
+              title: 'Clientes',
+              public: true,
+            },
+          },
+        ]
+      },
+      {
+        path: 'meus-clientes',
+        children: [
+          {
+            name: 'customers.index',
+            path: '',
+            component: () => import('@/ui/views/Platform/Customers/Index.vue'),
+            meta: {
+              title: 'Meus Clientes',
+              public: true,
+            },
+          },
+        ]
       },
       {
         path: 'planos',
@@ -24,7 +66,7 @@ export default [
             component: () => import('@/ui/views/Platform/Plans/Index.vue'),
             meta: {
               title: 'Planos',
-              public: true
+              public: true,
             },
           },
           {

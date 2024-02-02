@@ -1,42 +1,40 @@
 <template>
     <div class="container">
-        <Breadcrumb title="Planos">
-            <CreatePlan />
+        <Breadcrumb title="Estabelecimentos">
+            <!-- <CreateClient /> -->
         </Breadcrumb>
 
         <div
             class="w-full p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
-            
+
             <div class="bg-white rounded-lg shadow-md">
                 <table class="min-w-full border border-gray-300">
                     <thead>
                         <tr>
                             <th class="px-4 py-2 text-white bg-gray-800 border-b">Nome</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Preço Mensal</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Preço Anual</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Publicado</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Ações</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Responsável</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Telefone</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Estado</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Cidade</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white dark:bg-gray-800 dark:border-gray-700" v-for="plan in plans" :key="plan.id">
+                        <tr class="bg-white dark:bg-gray-800 dark:border-gray-700" v-for="establishment in establishments"
+                            :key="establishment.id">
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ plan?.label }}
+                                {{ establishment?.name }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                R$ {{ plan?.price_monthly }}
+                                {{ establishment?.responsible?.user?.name }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                R$ {{ plan?.price_yearly }}
+                                {{ formatPhoneNumber(establishment?.phone) }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ plan?.publish === 1 ? 'Sim' : 'Não' }}
+                                {{ establishment?.state }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <router-link :to="{ name: 'single.plan', params: { id: plan?.id } }"
-                                    class="px-1 py-1 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                    Visualizar
-                                </router-link>
+                                {{ establishment?.city }}
                             </td>
                         </tr>
                     </tbody>
@@ -46,26 +44,31 @@
     </div>
 </template>
 <script>
-import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue'
-import CreatePlan from './Create.vue';
-
+import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
+// import CreateClient from './Create.vue'
+import formatPhoneNumber from '@/ui/utils/formatPhoneNumber.js';
 export default {
+    name: 'Establishments',
     components: {
         Breadcrumb,
-        CreatePlan
+        // CreateClient
     },
     setup() {
         const store = useStore();
-        const plans = computed(() => store.state.plan.plans?.data);
+        const establishments = computed(() => store.state.establishment.establishments);
+        const responsible = computed(() => store.getters.getResponsible)
 
         onMounted(() => {
-            store.dispatch('getPlans')
+            store.dispatch('getEstablishments')
         });
 
+
         return {
-            plans
+            establishments,
+            responsible,
+            formatPhoneNumber
         }
     }
 }

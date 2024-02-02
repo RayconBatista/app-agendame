@@ -67,7 +67,6 @@ export default {
         const { state, execute, isLoading } = useAsyncState(() => store.dispatch('getPlans'))
 
         onMounted(() => {
-            console.log(plans)
             execute()
         })
 

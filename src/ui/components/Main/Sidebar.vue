@@ -1,56 +1,131 @@
 <template>
+  <div>
     <ul class="space-y-2 font-medium">
-      <li v-for="(item, index) in sidebar" :key="index">
-        <router-link
-          :to="{ name: item.to }"
-          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white"
-          :class="{ 'bg-gray-100 dark:bg-gray-700': isRouteActive(item.to) }"
-        >
-          <i :class="item.icon"></i>
-          <span class="ml-3">{{ item.title }}</span>
-        </router-link>
-      </li>
+      <template v-for="(items, groupName) in groupedSidebar" :key="groupName">
+        <template v-if="groupName !== 'geral' && (!isClient || groupName !== 'business')">
+          <li>
+            <button type="button" v-if="items.title"
+              class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              @click="toggleDropdown(groupName)">
+              <i :class="items.icon"></i>
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ items.title }}</span>
+              <svg :class="{ 'transform rotate-180': isDropdownOpen(groupName) }" class="w-3 h-3" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m1 1 4 4 4-4" />
+              </svg>
+            </button>
+            <ul v-show="isDropdownOpen(groupName)" class="py-2 space-y-2">
+              <template v-for="(item, index) in items?.items" :key="index">
+                <li v-if="hasPermission(item)">
+                  <router-link :to="{ name: item.to }"
+                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    :class="{ 'bg-gray-100 dark:bg-gray-700': isRouteActive(item.to) }">
+                    <span class="ml-3">{{ item.title }}</span>
+                  </router-link>
+                </li>
+              </template>
+            </ul>
+          </li>
+        </template>
+        <template v-else>
+          <template v-for="(item, index) in items.items" :key="index">
+            <li v-if="hasPermission(item)">
+              <router-link :to="{ name: item.to }" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white"
+                :class="{ 'bg-gray-100 dark:bg-gray-700': isRouteActive(item.to) }">
+                <i :class="item.icon"></i>
+                <span class="ml-3">{{ item.title }}</span>
+              </router-link>
+            </li>
+          </template>
+        </template>
+      </template>
     </ul>
-  </template>
-  
-  <script>
-  import { useStore } from "vuex";
-  import { onMounted, ref } from "vue";
-  import router from "@/router";
-  import sidebar from "@/config/sidebar.js";
-  
-  export default {
-    name: "Sidebar",
-    setup() {
-      const store = useStore();
-      const loading = ref(false);
-  
-      onMounted(() => {
-        sidebar.menu;
-      });
-  
-      const logout = () => {
-        loading.value = true;
-        store
-          .dispatch("logout")
-          .then(() => router.push({ name: "login" }))
-          .finally(() => (loading.value = false));
-      };
-  
-      const isRouteActive = (routeName) => {
-        // Verifica se a rota atual é a mesma que a rota do item do sidebar
-        return router.currentRoute.value.name === routeName;
-      };
-  
-      return {
-        logout,
-        sidebar: sidebar.menu,
-        isRouteActive,
-      };
-    },
-  };
-  </script>
-  
-  <style scoped>
-  </style>
-  
+  </div>
+</template>
+
+
+<script>
+import { useStore } from "vuex";
+import { onMounted, ref, computed } from "vue";
+import router from "@/router";
+import sidebar from "@/config/sidebar/admin.js";
+
+export default {
+  name: "Sidebar",
+  props: {
+    user: null
+  },
+  setup(props) {
+    const store = useStore();
+    const loading = ref(false);
+    const openDropdowns = ref([]);
+    const user = props?.user;
+
+    const logout = () => {
+      loading.value = true;
+      store.dispatch("logout")
+        .then(() => router.push({ name: "login" }))
+        .finally(() => (loading.value = false));
+    };
+
+    const isRouteActive = (routeName) => {
+      return router.currentRoute.value.name === routeName;
+    };
+
+    const isClient = user?.roles.some(role => role?.name === 'client');
+
+    const toggleDropdown = (groupName) => {
+      const index = openDropdowns.value.indexOf(groupName);
+      if (index === -1) {
+        openDropdowns.value.push(groupName);
+      } else {
+        openDropdowns.value.splice(index, 1);
+      }
+    };
+
+    const isDropdownOpen = (groupName) => {
+      return openDropdowns.value.includes(groupName);
+    };
+
+    const groupedSidebar = computed(() => {
+      const grouped = {};
+      for (const group in sidebar.menu) {
+        if (sidebar.menu.hasOwnProperty(group)) {
+          if (group.toLowerCase() === 'geral') {
+            grouped['geral'] = { title: 'Geral', items: sidebar.menu[group].items };
+          } else {
+            grouped[group] = sidebar.menu[group];
+          }
+        }
+      }
+      return grouped;
+    });
+
+    const hasPermission = (item) => {
+      // Verifica se o item tem permissão de acesso
+      if (user?.email === import.meta.env.VITE_APP_USER_EMAIL_ADMIN && item.can === null) {
+        return true; // Se a permissão for nula, todos têm acesso
+      }
+
+      // Se o usuário tiver acesso geral como administrador, retorne true
+      if (user?.email === import.meta.env.VITE_APP_USER_EMAIL_ADMIN) {
+        return true;
+      }
+      
+      return user?.permissions.includes(item.can);
+    };
+
+    return {
+      user,
+      isClient,
+      logout,
+      groupedSidebar,
+      isRouteActive,
+      toggleDropdown,
+      isDropdownOpen,
+      hasPermission,
+    };
+  },
+};
+</script>
