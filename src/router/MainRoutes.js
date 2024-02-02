@@ -24,7 +24,7 @@ export default [
             component: () => import('@/ui/views/Platform/Establishments/Index.vue'),
             meta: {
               title: 'Estabelecimentos',
-              public: true,
+              public: false,
             },
           },
         ]
@@ -38,7 +38,7 @@ export default [
             component: () => import('@/ui/views/Platform/Clients/Index.vue'),
             meta: {
               title: 'Clientes',
-              public: true,
+              public: false,
             },
           },
         ]
