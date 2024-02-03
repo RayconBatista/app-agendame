@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Breadcrumb title="Estabelecimentos">
+        <Breadcrumb title="Serviços">
             <!-- <CreateClient /> -->
         </Breadcrumb>
 
@@ -12,29 +12,25 @@
                     <thead>
                         <tr>
                             <th class="px-4 py-2 text-white bg-gray-800 border-b">Nome</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Proprietário</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Telefone</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Estado</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Cidade</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Descrição</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Preço</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Categoria</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white dark:bg-gray-800 dark:border-gray-700" v-for="establishment in establishments"
-                            :key="establishment.id">
+                        <tr class="bg-white dark:bg-gray-800 dark:border-gray-700" v-for="service in services"
+                            :key="service.id">
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ establishment?.name }}
+                                {{ service?.name }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ establishment?.responsible?.user?.name }}
+                                {{ service?.description }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ formatPhoneNumber(establishment?.phone) }}
+                                {{ service?.price }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ establishment?.state }}
-                            </td>
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ establishment?.city }}
+                                {{ service?.category }}
                             </td>
                         </tr>
                     </tbody>
@@ -47,28 +43,22 @@
 import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
-// import CreateClient from './Create.vue'
-import formatPhoneNumber from '@/ui/utils/formatPhoneNumber.js';
+
 export default {
-    name: 'Establishments',
+    name: 'Services',
     components: {
-        Breadcrumb,
-        // CreateClient
+        Breadcrumb
     },
     setup() {
         const store = useStore();
-        const establishments = computed(() => store.state.establishment.establishments);
-        const responsible = computed(() => store.getters.getResponsible)
+        const services = computed(() => store.state.service.services)
 
         onMounted(() => {
-            store.dispatch('getEstablishments')
-        });
-
+            store.dispatch('getServices');
+        })
 
         return {
-            establishments,
-            responsible,
-            formatPhoneNumber
+            services
         }
     }
 }

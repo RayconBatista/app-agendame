@@ -13,8 +13,6 @@
     </div>
 </template>
 <script>
-import { ref, onMounted } from "vue";
-
 export default {
     props: {
         loading: {
@@ -24,10 +22,6 @@ export default {
     },
     setup(props) {
         const { loading } = props
-
-        onMounted(() => {
-            console.log({'LOADING': loading})
-        })
 
         return {
             loading

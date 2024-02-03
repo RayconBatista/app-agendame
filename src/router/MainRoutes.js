@@ -1,3 +1,4 @@
+import AccessRoutes from './AccessRoutes';
 import { redirectIfAuthenticated, redirectIfNotAuthenticated } from './guards';
 
 export default [
@@ -44,6 +45,20 @@ export default [
         ]
       },
       {
+        path: 'servicos',
+        children: [
+          {
+            name: 'services.index',
+            path: '',
+            component: () => import('@/ui/views/Platform/Services/Index.vue'),
+            meta: {
+              title: 'Serviços',
+              public: false,
+            },
+          },
+        ]
+      },
+      {
         path: 'meus-clientes',
         children: [
           {
@@ -76,6 +91,7 @@ export default [
           }
         ]
       },
+      ...AccessRoutes,
     ]
   },
   {

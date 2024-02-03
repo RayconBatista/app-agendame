@@ -31,7 +31,16 @@ export default {
                     to: 'customers.index',
                     can: 'list_client'
                 },
+                {
+                    title: 'Serviços',
+                    to: 'services.index',
+                    can: 'list_services'
+                },
             ]
+        },
+        accessControl: {
+            icon: 'fa-solid fa-shield-halved',
+            title: 'Controle de acesso'
         }
     }
 }
