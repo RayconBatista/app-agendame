@@ -17,6 +17,16 @@ export default [
         }
       },
       {
+        name: 'resume',
+        path: 'resumo',
+        beforeEnter: redirectIfAuthenticated,
+        component: () => import('@/ui/views/Platform/Resume/Index.vue'),
+        meta: {
+          title: 'Resumo',
+          public: true,
+        }
+      },
+      {
         path: 'estabelecimentos',
         children: [
           {
@@ -53,7 +63,7 @@ export default [
             component: () => import('@/ui/views/Platform/Services/Index.vue'),
             meta: {
               title: 'Serviços',
-              public: false,
+              public: true,
             },
           },
         ]

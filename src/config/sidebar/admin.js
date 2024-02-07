@@ -25,6 +25,7 @@ export default {
         business: {
             icon: 'fa-solid fa-briefcase',
             title: 'Negócio',
+            can: 'client',
             items: [
                 {
                     title: 'Meus Clientes',
@@ -40,7 +41,20 @@ export default {
         },
         accessControl: {
             icon: 'fa-solid fa-shield-halved',
-            title: 'Controle de acesso'
+            title: 'Controle de acesso',
+            can: 'super-admin',
+            items: [
+                {
+                    title: 'Cargos',
+                    to: 'roles.index',
+                    can: null
+                },
+                {
+                    title: 'Permissões',
+                    to: 'permissions.index',
+                    can: null
+                },
+            ]
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Breadcrumb title="Estabelecimentos">
-            <!-- <CreateClient /> -->
+            <CreateEstablishment />
         </Breadcrumb>
 
         <div
@@ -47,13 +47,13 @@
 import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
-// import CreateClient from './Create.vue'
+import CreateEstablishment from './Create.vue'
 import formatPhoneNumber from '@/ui/utils/formatPhoneNumber.js';
 export default {
     name: 'Establishments',
     components: {
         Breadcrumb,
-        // CreateClient
+        CreateEstablishment
     },
     setup() {
         const store = useStore();

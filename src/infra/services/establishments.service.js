@@ -15,7 +15,14 @@ export default class EstablishmentsService extends BaseService {
     }
     static async storeEstablishment(params) {
         return new Promise((resolve, reject) => {
-
+            this.request({ auth: true })
+            .post('admin/establishments', params)
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error.response)
+            })
         })
     }
 }

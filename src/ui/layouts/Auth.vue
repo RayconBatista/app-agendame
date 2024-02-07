@@ -1,10 +1,18 @@
 <template>
-    <section class="bg-gray-50 dark:bg-gray-900">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div
-                class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                <RouterView />
+<div class="bg-gray-100 text-gray-900">
+    <div class="w-full h-screen bg-white dark:bg-gray-900 shadow  flex justify-center flex-1">
+        <div class="flex-1 bg-indigo-100 text-center hidden lg:flex">
+            <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat backgroundImage">
             </div>
         </div>
-    </section>
+        <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+            <RouterView />
+        </div>
+    </div>
+</div>
 </template>
+<style scoped>
+    .backgroundImage {
+        background-image: url('@/ui/assets/images/site/barber.svg')
+    }
+</style>

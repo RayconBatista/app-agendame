@@ -10,8 +10,8 @@
 
         <form class="space-y-4 md:space-y-6" @submit.stop.prevent="submit">
             <div>
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                    name
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Seu nome
                 </label>
                 <input type="text" id="name"
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -22,8 +22,8 @@
                 <span class="text-red-500" v-if="!!errors">{{ errors.name }}</span>
             </div>
             <div>
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                    email
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Seu email
                 </label>
                 <input type="email" id="email"
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -34,7 +34,9 @@
                 <span class="text-red-500" v-if="!!errors">{{ errors.email }}</span>
             </div>
             <div>
-                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Sua senha
+                </label>
                 <input type="password" id="password" v-model="password" :error-messages="errors.password"
                     placeholder="••••••••" :class="[
                         'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
@@ -80,7 +82,10 @@ export default {
         const schema = object({
             name: string().required().min(3).label('Nome Completo'),
             email: string().required().email().label('E-mail'),
-            password: string().required().min(6).label('Senha')
+            password: string().required().min(8).matches(
+                /^(?=.*[a-zA-Z])(?=.*[0-9])/,
+                'Pelo menos uma letra e um número'
+            ).label('Senha')
         })
 
         const { handleSubmit, errors, isSubmitting } = useForm({

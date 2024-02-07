@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Breadcrumb title="Cargos">
+        <Breadcrumb title="Permissões">
             <!-- <CreateClient /> -->
         </Breadcrumb>
 

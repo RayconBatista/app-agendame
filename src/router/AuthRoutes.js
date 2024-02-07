@@ -19,6 +19,11 @@ export default [
   {
     path: '/cadastrar',
     component: () => import('@/ui/layouts/Auth.vue'),
+    beforeEnter: redirectIfAuthenticated,
+    meta: {
+      title: 'Cadastrar',
+      public: true
+    },
     children: [
       {
         name: 'register',
@@ -31,6 +36,10 @@ export default [
     path: '/esqueci-minha-senha',
     component: () => import('@/ui/layouts/Auth.vue'),
     beforeEnter: redirectIfAuthenticated,
+    meta: {
+      title: 'Esqueci minha senha',
+      public: true
+    },
     children: [
       {
         path: '',
