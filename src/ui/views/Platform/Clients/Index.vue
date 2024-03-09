@@ -1,11 +1,10 @@
 <template>
     <div class="container">
         <Breadcrumb title="Clientes">
-            <CreateClient />
+            <!-- <CreateClient /> -->
         </Breadcrumb>
 
-        <div
-            class="w-full p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
+        <div class="w-full p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
 
             <div class="bg-white rounded-lg shadow-md">
                 <table class="min-w-full border border-gray-300">
@@ -18,8 +17,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white dark:bg-gray-800 dark:border-gray-700" v-for="client in clients"
-                            :key="client.id">
+                        <tr class="bg-white dark:bg-gray-800 dark:border-gray-700" v-for="client in clients" :key="client.id">
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ client?.user?.name }}
                             </td>
@@ -39,12 +37,14 @@
         </div>
     </div>
 </template>
+
 <script>
-import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
-import { computed, onMounted } from 'vue';
-import { useStore } from 'vuex';
 import CreateClient from './Create.vue'
+import { computed, onMounted } from 'vue';
+import { useClientStore } from "@/store/clients";
+import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
 import formatPhoneNumber from '@/ui/utils/formatPhoneNumber.js';
+
 export default {
     name: 'Clients',
     components: {
@@ -52,13 +52,11 @@ export default {
         CreateClient
     },
     setup() {
-        const store = useStore();
-        const clients = computed(() => store.state.client.clients);
+        const clients = computed(() => useClientStore().clients);
 
         onMounted(() => {
-            store.dispatch('getClients')
+            useClientStore().getClients();
         });
-
 
         return {
             clients,

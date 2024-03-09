@@ -49,7 +49,7 @@ export default [
             component: () => import('@/ui/views/Platform/Clients/Index.vue'),
             meta: {
               title: 'Clientes',
-              public: false,
+              public: true,
             },
           },
         ]
@@ -86,8 +86,8 @@ export default [
         path: 'planos',
         children: [
           {
-            name: 'plans',
             path: '',
+            name: 'plans',
             component: () => import('@/ui/views/Platform/Plans/Index.vue'),
             meta: {
               title: 'Planos',

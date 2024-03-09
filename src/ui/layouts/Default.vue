@@ -22,6 +22,7 @@ import Navbar from '@/ui/components/Main/Navbar.vue';
 import Sidebar from '@/ui/components/Main/Sidebar.vue'
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import { useMeStore } from '@/store/me';
 export default {
     name: 'Default',
     components: {
@@ -30,14 +31,16 @@ export default {
     },
     setup() {
         const store = useStore();
-        const user = computed(() => store.state.auth.me);
+        const meStore = useMeStore();
+        const user = computed(() => meStore?.user);
 
-        onMounted(() => {
-            store.dispatch('getMe');
+        onMounted(async () => {
+            //     store.dispatch('getMe');
+            await meStore.getMe();
         });
         
         return {
-            user
+            user: user.value
         }
     }
 };

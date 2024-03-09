@@ -3,10 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AuthRoutes from './AuthRoutes';
 import MainRoutes from './MainRoutes';
 import SiteRoutes from './SiteRoutes';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
-import { TOKEN_NAME } from '../config';
-
+import { useMeStore } from '@/store/me';
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -22,10 +19,10 @@ const router = createRouter({
             path: '/unauthorized',
             name: 'Unauthorized',
             meta: {
-                title: 'Unauthorized',
-                public: true // Defina como verdadeiro se não exigir autenticação
+                title: 'Não autorizado',
+                public: true
             },
-            component: () => import('@/ui/views/Errors/Error403.vue') // Crie este componente se ainda não existir
+            component: () => import('@/ui/views/Errors/Error403.vue')
         },
         ...AuthRoutes,
         ...MainRoutes,
@@ -34,34 +31,46 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    document.title = to.meta.title;
-    const store = useStore();
-    const token = localStorage.getItem(TOKEN_NAME)
+    document.title  = to.meta.title;
+    const meStore   = useMeStore();
+
+    const token = localStorage.getItem(import.meta.env.VITE_APP_TOKEN_NAME);
     if(token) {
-        await store.dispatch('getMe'); // Aguarde a conclusão da ação getMe
+        await meStore.getMe(); // Aguarde a conclusão da ação getMe
     }
 
-    const isAuthenticated = store?.state?.auth?.loggedIn;
-    const user = store?.state?.auth?.me;
-    const requiresAuth = !to.meta.public;
+    next();
+})
 
-    if (requiresAuth && !isAuthenticated) {
-        next('/login'); // Redireciona para a página de login se a rota requer autenticação e o usuário não está autenticado
-        return;
-    }
+// router.beforeEach(async (to, from, next) => {
+//     document.title = to.meta.title;
+//     const store = useStore();
+//     const token = localStorage.getItem(TOKEN_NAME)
+//     if(token) {
+//         await store.dispatch('getMe'); // Aguarde a conclusão da ação getMe
+//     }
 
-    //Verifica se o usuário possui a função de administrador
-    const isAdmin = user?.roles.some(role => {
-        return role?.name === 'super-admin' || role?.name === 'admin';
-    });
+//     const isAuthenticated = store?.state?.auth?.loggedIn;
+//     const user = store?.state?.auth?.me;
+//     const requiresAuth = !to.meta.public;
 
-    if (!isAdmin && !to.meta.public) {
-        next({ name: 'Unauthorized' }); // Redireciona para a página Unauthorized se o usuário não tiver permissão para acessar uma rota protegida
-        return;
-    }
+//     if (requiresAuth && !isAuthenticated) {
+//         next('/login'); // Redireciona para a página de login se a rota requer autenticação e o usuário não está autenticado
+//         return;
+//     }
 
-    next(); // Permite que o usuário acesse a próxima rota
-});
+//     //Verifica se o usuário possui a função de administrador
+//     const isAdmin = user?.roles.some(role => {
+//         return role?.name === 'super-admin' || role?.name === 'admin';
+//     });
+
+//     if (!isAdmin && !to.meta.public) {
+//         next({ name: 'Unauthorized' }); // Redireciona para a página Unauthorized se o usuário não tiver permissão para acessar uma rota protegida
+//         return;
+//     }
+
+//     next(); // Permite que o usuário acesse a próxima rota
+// });
 
 
 export default router;

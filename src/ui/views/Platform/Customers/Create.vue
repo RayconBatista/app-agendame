@@ -26,22 +26,24 @@ import { ref } from 'vue';
 import { useStore } from 'vuex';
 import Modal from '@/ui/components/Main/Modal.vue';
 import { notify } from '@kyvg/vue3-notification';
+import { useCustomerStore } from "@/store/customers";
 export default {
     name: 'CreateClient',
     components: {
         Modal
     },
     setup() {
-        const modalCreateClientRef = ref(null);
-        const store = useStore();
-        const form = ref({
-            name: '',
-            email: '',
-            phone: '',
+        const modalCreateClientRef  = ref(null);
+        const store                 = useStore();
+        const customerStore         = useCustomerStore();
+        const form                  = ref({
+            name    : '',
+            email   : '',
+            phone   : '',
         });
 
         const newClient = () => {
-            store.dispatch('saveClient', form.value)
+            customerStore.saveCustomer(form.value)
                 .then(() => {
                     notify({
                         title: "Deu certo",
@@ -58,8 +60,27 @@ export default {
                     });
                 })
                 .finally(() => {
-                    store.dispatch('getClients')
-                })
+                    customerStore.getCustomers();
+                });
+            // store.dispatch('saveClient', form.value)
+            //     .then(() => {
+            //         notify({
+            //             title: "Deu certo",
+            //             text: "Cliente registrado com sucesso",
+            //             type: "success",
+            //         });
+            //         modalCreateClientRef.value?.hideModal();
+            //     })
+            //     .catch((e) => {
+            //         notify({
+            //             title: "Deu ruim",
+            //             text: e?.data?.message,
+            //             type: "warning",
+            //         });
+            //     })
+            //     .finally(() => {
+            //         store.dispatch('getClients')
+            //     })
         }
 
         return {

@@ -42,7 +42,7 @@
 <script>
 import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
 import { computed, onMounted } from 'vue';
-import { useStore } from 'vuex';
+import { useCustomerStore } from "@/store/customers";
 import formatPhoneNumber from '@/ui/utils/formatPhoneNumber.js';
 // import CreateClient from './Create.vue'
 
@@ -53,11 +53,10 @@ export default {
         // CreateClient
     },
     setup() {
-        const store = useStore();
-        const customers = computed(() => store.state.customer.customers);
+        const customers = computed(() => useCustomerStore().customers);
 
         onMounted(() => {
-            store.dispatch('getCustomers')
+            useCustomerStore().getCustomers();
         });
 
 

@@ -1,4 +1,4 @@
-import { redirectIfAuthenticated, redirectIfNotAuthenticated } from './guards';
+import { checkIfTokenExists, redirectIfAuthenticated, redirectIfNotAuthenticated } from './guards';
 export default [
   {
     path: '/login',
@@ -20,13 +20,13 @@ export default [
     path: '/cadastrar',
     component: () => import('@/ui/layouts/Auth.vue'),
     beforeEnter: redirectIfAuthenticated,
+    name: 'register',
     meta: {
       title: 'Cadastrar',
       public: true
     },
     children: [
       {
-        name: 'register',
         path: '',
         component: () => import('@/ui/views/Auth/Register.vue')
       },
@@ -51,6 +51,7 @@ export default [
   {
     path: '/verificar-email',
     component: () => import('@/ui/layouts/Auth.vue'),
+    beforeEnter: checkIfTokenExists,
     children: [
       {
         path: '',

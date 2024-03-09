@@ -4,7 +4,7 @@ export default class PlansService extends BaseService {
     static async plans(params) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .get('/plans', params)
+                .get('api/plans', params)
                 .then(response => {
                     resolve(response)
                 })
@@ -17,7 +17,7 @@ export default class PlansService extends BaseService {
     static async storePlan(params) {
         return new Promise(async (resolve, reject) => {
             await this.request({ auth: true })
-                .post('/admin/plans', {...params, name: params.label.toLowerCase().trim()})
+                .post('api/admin/plans', {...params, name: params.label.toLowerCase().trim()})
                 .then(response => resolve(response))
                 .catch(error => reject(error.response))
         })
@@ -26,7 +26,7 @@ export default class PlansService extends BaseService {
     static async getPlan(id) {
         return new Promise(async (resolve, reject) => {
             await this.request({ auth: true })
-                .get(`/admin/plans/${id}`)
+                .get(`api/admin/plans/${id}`)
                 .then(response => resolve(response))
                 .catch(error => reject(error.response))
         })
@@ -35,7 +35,7 @@ export default class PlansService extends BaseService {
     static async updatePlan(id, payload) {
         return new Promise(async (resolve, reject) => {
             await this.request({ auth: true })
-                .put(`/admin/plans/${id}`, {...payload, name: payload.label.toLowerCase().trim()})
+                .put(`api/admin/plans/${id}`, {...payload, name: payload.label.toLowerCase().trim()})
                 .then(response => resolve(response))
                 .catch(error => reject(error.response))
         })
@@ -44,7 +44,7 @@ export default class PlansService extends BaseService {
     static async destroy(id) {
         return new Promise(async (resolve, reject) => {
             await this.request({ auth: true })
-                .delete(`/admin/plans/${id}`)
+                .delete(`api/admin/plans/${id}`)
                 .then(response => resolve(response))
                 .catch(error => reject(error.response))
         })

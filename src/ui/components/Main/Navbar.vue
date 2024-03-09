@@ -56,7 +56,8 @@
             <li>
                 <router-link to="/profile"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                    role="menuitem">Meu perfil</router-link>
+                    role="menuitem">Meu perfil
+                </router-link>
             </li>
             <li>
                 <a href="#"
@@ -73,33 +74,28 @@
 </template>
 <script>
 import { ref, computed, onMounted } from 'vue';
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router';
-import { TOKEN_NAME } from '@/config'
-// import router from "@/router"
+import { useMeStore } from '@/store/me';
+import { useAuthStore } from '@/store/auth';
+import { useRouter } from 'vue-router';
+
 export default {
     name: 'Navbar',
     setup() {
-        const openUserMenu = ref(false);
-        const store = useStore();
-        const router = useRouter();
-        const currentPage = ref('');
-        const loading = ref(false);
-        const user = computed(() => store.state.auth.me);
-        const title = import.meta.env.VITE_APP_NAME;
+        const openUserMenu  = ref(false);
+        const authStore     = useAuthStore()
+        const router        = useRouter();
+        const currentPage   = ref('');
+        const meStore       = useMeStore()
+        const user          = computed(() => meStore?.user);
+        const title         = import.meta.env.VITE_APP_NAME;
 
 
         onMounted(() => {
-            store.dispatch('getMe')
+            meStore.getMe();
         })
 
         const logout = () => {
-            const storage = localStorage.getItem(TOKEN_NAME);
-            if (storage) {
-                localStorage.removeItem(TOKEN_NAME);
-                router.go();
-            }
-
+            authStore.logout().finally(() => router.go());
         }
 
         const openProfileMenu = () => {
@@ -111,7 +107,7 @@ export default {
             openProfileMenu,
             openUserMenu,
             currentPage,
-            user,
+            user: user.value,
             title
         }
     }

@@ -5,9 +5,20 @@ export default class AuthService extends BaseService {
     static async auth(params) {
         return new Promise((resolve, reject) => {
             this.request()
-                .post('/login', params)
+                .post('api/login', params)
                 .then(response => {
-                    localStorage.setItem(TOKEN_NAME, response.data.token)
+                    // localStorage.setItem(TOKEN_NAME, response.data.token)
+                    resolve(response)
+                })
+                .catch(error => reject(error.response))
+        })
+    }
+
+    static logout() {
+        return new Promise((resolve, reject) => {
+            this.request({ auth: true })
+                .post('api/logout')
+                .then(response => {
                     resolve(response)
                 })
                 .catch(error => reject(error.response))
@@ -17,7 +28,7 @@ export default class AuthService extends BaseService {
     static async forgotPassword(params) {
         return new Promise((resolve, reject) => {
             this.request()
-                .post('/forgot-password', { email: params })
+                .post('api/forgot-password', { email: params })
                 .then(response => {
                     resolve(response)
                 })
@@ -28,7 +39,7 @@ export default class AuthService extends BaseService {
     static async resetPassword(params) {
         return new Promise((resolve, reject) => {
             this.request()
-                .post('/reset-password', params)
+                .post('api/reset-password', params)
                 .then(response => {
                     resolve(response)
                 })
@@ -36,10 +47,10 @@ export default class AuthService extends BaseService {
         })
     }
 
-    static async register(params) {
+    static async register({ plan_id, name, email, password }) {
         return new Promise((resolve, reject) => {
             this.request()
-                .post('/register', params)
+                .post('api/register', { plan_id, name, email, password })
                 .then(response => {
                     resolve(response)
                 })
@@ -48,15 +59,9 @@ export default class AuthService extends BaseService {
     }
 
     static async getMe() {
-        const token = localStorage.getItem(TOKEN_NAME)
-
-        if (!token) {
-            return Promise.reject('Token Not Found')
-        }
-
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .get('/me')
+                .get('api/me')
                 .then(response => {
                     resolve(response.data)
                 })
@@ -70,7 +75,7 @@ export default class AuthService extends BaseService {
     static async verifyEmailfromToken(token) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .post('/verify-email', { token: token })
+                .post('api/verify-email', { token: token })
                 .then(response => {
                     resolve(response.data)
                 })

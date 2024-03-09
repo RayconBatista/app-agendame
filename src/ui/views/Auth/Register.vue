@@ -4,7 +4,8 @@
         Flowbite
     </a>
     <div class="p-6 space-y-2 md:space-y-4 sm:p-8">
-        <h1 class="text-xl font-bold text-center leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+        <h1
+            class="text-xl font-bold text-center leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Faça o seu cadastro
         </h1>
 
@@ -16,9 +17,9 @@
                 <input type="text" id="name"
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     :class="[
-                        'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                        { 'focus:border-blue border-2 dark:border-red-500': errors.name }
-                    ]" placeholder="Fulano de tal" v-model="name" :error-messages="errors.name">
+            'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+            { 'focus:border-blue border-2 dark:border-red-500': errors.name }
+        ]" placeholder="Fulano de tal" v-model="name" :error-messages="errors.name">
                 <span class="text-red-500" v-if="!!errors">{{ errors.name }}</span>
             </div>
             <div>
@@ -28,9 +29,9 @@
                 <input type="email" id="email"
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     :class="[
-                        'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                        { 'focus:border-blue border-2 dark:border-red-500': errors.email }
-                    ]" placeholder="name@company.com" v-model="email" :error-messages="errors.email">
+            'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+            { 'focus:border-blue border-2 dark:border-red-500': errors.email }
+        ]" placeholder="name@company.com" v-model="email" :error-messages="errors.email">
                 <span class="text-red-500" v-if="!!errors">{{ errors.email }}</span>
             </div>
             <div>
@@ -39,9 +40,9 @@
                 </label>
                 <input type="password" id="password" v-model="password" :error-messages="errors.password"
                     placeholder="••••••••" :class="[
-                        'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                        { 'focus:border-blue border-2 dark:border-red-500': errors.password }
-                    ]">
+            'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+            { 'focus:border-blue border-2 dark:border-red-500': errors.password }
+        ]">
                 <span class="text-red-500" v-if="!!errors">{{ errors.password }}</span>
             </div>
             <button type="submit" :disabled="isSubmitting"
@@ -49,10 +50,10 @@
 
                 <div v-if="isSubmitting" class="flex items-center justify-center">
                     <Spinner :loading="isSubmitting" />
-                    <span class="ml-2">Entrando....</span>
+                    <span class="ml-2">Salvando....</span>
                 </div>
 
-                <span v-else>Entrar</span>
+                <span v-else>Salvar</span>
 
             </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
@@ -64,24 +65,27 @@
     </div>
 </template>
 <script>
-import { useStore } from "vuex";
+import { useAuthStore } from '@/store/auth';
 import { notify } from "@kyvg/vue3-notification";
 import { useRouter, useRoute } from "vue-router";
 import { useField, useForm } from 'vee-validate';
 import { object, string } from 'yup'
 import Spinner from '@/ui/components/Spinner.vue';
+import { useSubscriptionStore } from '@/store/subscription';
 
 export default {
     components: {
         Spinner
     },
     setup() {
-        const store = useStore();
-        const router = useRouter();
+        const authStore         = useAuthStore();
+        const router            = useRouter();
+        const route             = useRoute();
+        const subscriptionStore = useSubscriptionStore();
 
-        const schema = object({
-            name: string().required().min(3).label('Nome Completo'),
-            email: string().required().email().label('E-mail'),
+        const schema    = object({
+            name    : string().required().min(3).label('Nome Completo'),
+            email   : string().required().email().label('E-mail'),
             password: string().required().min(8).matches(
                 /^(?=.*[a-zA-Z])(?=.*[0-9])/,
                 'Pelo menos uma letra e um número'
@@ -90,29 +94,29 @@ export default {
 
         const { handleSubmit, errors, isSubmitting } = useForm({
             validationSchema: schema,
-            initialValues: {
-                name: '',
-                email: '',
+            initialValues   : {
+                name    : '',
+                email   : '',
                 password: ''
             }
         })
 
         const submit = handleSubmit(async (values) => {
             try {
-                await store
-                    .dispatch("register", {
-                        name: values.name,
-                        email: values.email,
-                        password: values.password
-                    }).then(() => {
-                        notify({
-                            title: "Deu certo!",
-                            type: "success",
-                        });
-                    }).finally(() => {
-                        router.push({ name: "login" })
-                    })
-            } catch (e) {
+                await authStore.register({
+                    plan_id     : route.query.plan_id,
+                    name        : values.name,
+                    email       : values.email,
+                    password    : values.password
+                });
+
+                notify({
+                    title: "Deu certo!",
+                    type: "success",
+                });
+                
+                router.push({ name: "login" });
+            } catch (error) {
                 let msgError = "Falha na requisição";
                 notify({
                     title: "Falha ao autenticar",
@@ -122,9 +126,9 @@ export default {
             }
         })
 
-        const { value: name } = useField('name')
-        const { value: email } = useField('email')
-        const { value: password } = useField('password')
+        const { value: name }       = useField('name')
+        const { value: email }      = useField('email')
+        const { value: password }   = useField('password')
 
         return {
             name,
@@ -136,5 +140,4 @@ export default {
         }
     }
 }
-
 </script>

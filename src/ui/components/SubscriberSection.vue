@@ -13,13 +13,13 @@
         </div>
         <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
             <!-- Pricing Card -->
-            <div v-for="plan in plans" :key="plan.id"
+            <div v-for="plan in plans" :key="plan?.id"
                 class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
-                <h3 class="mb-4 text-2xl font-semibold">{{ plan.label }}</h3>
-                <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">{{ plan.description }}</p>
+                <h3 class="mb-4 text-2xl font-semibold">{{ plan?.label }}</h3>
+                <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">{{ plan?.description }}</p>
                 <div class="flex justify-center items-baseline my-8">
                     <span class="mr-2 text-5xl font-extrabold">
-                        {{ isYearly ? plan.price_yearly : plan.price_monthly }}
+                        {{ isYearly ? plan?.price_yearly : plan?.price_monthly }}
                     </span>
                     <span class="text-gray-500 dark:text-gray-400">
                         {{ isYearly ? "por ano" : "por mês" }}
@@ -39,50 +39,52 @@
                         <span>{{ detail?.label }}</span>
                     </li>
                 </ul>
-                <a @click="selectPlan(plan.id)"
+                <button @click="selectPlan(plan.id)"
                     class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900">
                     Começar
-                </a>
+                </button>
             </div>
         </div>
     </div>
 </template>
 <script>
 import { onMounted, computed, ref } from 'vue';
-import { useStore } from 'vuex';
 import Spinner from '@/ui/components/Spinner.vue';
 import { useAsyncState } from '@vueuse/core'
+import { usePlanStore } from '@/store/plans';
+import { useSubscriptionStore } from '@/store/subscription';
+import { useMeStore } from '@/store/me';
+import { useRouter } from 'vue-router'; 
+
 export default {
     name: "SubscriberSection",
     components: {
         Spinner
     },
     setup() {
-        const store = useStore();
-        const plans = computed(() => store.getters.getPublishes);
+        const frequency         = ref('monthly')
+        const planStore         = usePlanStore();
+        const subscriptionStore = useSubscriptionStore();
+        const plans             = computed(() => planStore.getPublishes);
+        const isYearly          = computed(() => frequency.value === 'yearly');
 
-        const frequency = ref('monthly')
-        const isYearly = computed(() => frequency.value === 'yearly');
-
-        const { state, execute, isLoading } = useAsyncState(() => store.dispatch('getPlans'))
+        const { state, execute, isLoading } = useAsyncState(() => planStore.getPlans())
 
         onMounted(() => {
-            execute()
+            execute();
         })
 
-        const toggleFrequency = () => {
-            frequency.value ? 'yearly' : 'monthly'
-        }
+        const toggleFrequency = () => frequency.value ? 'yearly' : 'monthly';
 
         const selectPlan = async (planId) => {
             const params = {
-                plan_id: planId,
-                frequency: frequency.value
+                plan_id     : planId,
+                frequency   : frequency.value
             }
 
-            await store.dispatch('subscribe', params)
+            // Se o usuário estiver autenticado, prosseguir com a assinatura
+            await subscriptionStore.subscribe(params);
         }
-
 
         return {
             plans,

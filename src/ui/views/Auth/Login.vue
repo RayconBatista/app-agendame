@@ -22,8 +22,7 @@
 
             </div>
             <div>
-                <label for="password"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                 <input type="password" id="password" v-model="password" :error-messages="errors.password"
                     placeholder="••••••••" :class="[
                         'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
@@ -41,7 +40,8 @@
                         <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
                     </div>
                 </div>
-                <router-link :to="{name: 'forgotPassword'}" class="text-sm font-medium text-primary-600 hover:underline dark:text-white">
+                <router-link :to="{ name: 'forgotPassword' }"
+                    class="text-sm font-medium text-primary-600 hover:underline dark:text-white">
                     Esqueci minha senha
                 </router-link>
             </div>
@@ -64,48 +64,46 @@
     </div>
 </template>
 <script>
-import { useStore } from "vuex";
 import { notify } from "@kyvg/vue3-notification";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useField, useForm } from 'vee-validate';
 import { object, string } from 'yup'
 import Spinner from '@/ui/components/Spinner.vue';
+import {useAuthStore} from '@/store/auth';
 
 export default {
     components: {
         Spinner
     },
     setup() {
-        const store = useStore();
-        const router = useRouter();
+        const authStore = useAuthStore()
+        const router    = useRouter();
 
         const schema = object({
-            email: string().required().email().label('E-mail'),
-            password: string().required().min(6).label('Senha')
+            email       : string().required().email().label('E-mail'),
+            password    : string().required().min(6).label('Senha')
         })
 
         const { handleSubmit, errors, isSubmitting } = useForm({
             validationSchema: schema,
             initialValues: {
-                email: '',
-                password: ''
+                email       : '',
+                password    : ''
             }
         })
 
         const submit = handleSubmit(async (values) => {
             try {
-                await store
-                    .dispatch("auth", {
-                        email: values.email,
-                        password: values.password
-                    }).then(() => {
+                authStore
+                    .login(values.email, values.password)
+                    .then(() => {
                         notify({
-                            title: "Deu certo!",
-                            type: "success",
+                            title   : "Deu certo!",
+                            type    : "success",
                         });
                     }).finally(() => {
-                        router.push({ name: "dashboard" })
-                    })
+                        router.push({ name: 'dashboard' })
+                    });
             } catch (e) {
                 let msgError = "Falha na requisição";
                 notify({
@@ -116,8 +114,8 @@ export default {
             }
         })
 
-        const { value: email } = useField('email')
-        const { value: password } = useField('password')
+        const { value: email }      = useField('email')
+        const { value: password }   = useField('password')
 
         return {
             email,

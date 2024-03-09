@@ -4,7 +4,7 @@ export default class CustomersService extends BaseService {
     static async customers(params) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .get('admin/customers', params)
+                .get('api/admin/customers', params)
                 .then(response => {
                     resolve(response)
                 })
@@ -17,7 +17,7 @@ export default class CustomersService extends BaseService {
     static async storeCustomer(params) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .post('admin/customers', params)
+                .post('api/admin/customers', params)
                 .then(response => {
                     resolve(response)
                 })

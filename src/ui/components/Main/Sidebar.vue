@@ -98,7 +98,7 @@ export default {
       return router.currentRoute.value.name === routeName;
     };
 
-    const isClient = user?.roles.some(role => role?.name === 'client');
+    const isClient = user?.roles?.some(role => role?.name === 'client');
 
     const toggleDropdown = (groupName) => {
       const index = openDropdowns.value.indexOf(groupName);

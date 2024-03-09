@@ -23,11 +23,8 @@
     </section>
 </template>
 <script>
-import { onMounted, computed, ref } from 'vue';
-import { useStore } from 'vuex';
 import Spinner from '@/ui/components/Spinner.vue';
 import SubscriberSection from '@/ui/components/SubscriberSection.vue';
-import { useAsyncState } from '@vueuse/core'
 
 export default {
     name: "Plans",
@@ -35,41 +32,5 @@ export default {
         Spinner,
         SubscriberSection
     },
-    setup() {
-        const store = useStore();
-        const plans = computed(() => store.state.plan.plans?.data);
-
-        const frequency = ref('monthly')
-        const isYearly = computed(() => frequency.value === 'yearly');
-
-        const { state, execute, isLoading } = useAsyncState(() => store.dispatch('getPlans'))
-
-        onMounted(() => {
-            execute()
-        })
-
-        const toggleFrequency = () => {
-            frequency.value ? 'yearly' : 'monthly'
-        }
-
-        const selectPlan = async (planId) => {
-            const params = {
-                plan_id: planId,
-                frequency: frequency.value
-            }
-
-            await store.dispatch('subscribe', params)
-        }
-
-
-        return {
-            plans,
-            frequency,
-            toggleFrequency,
-            isLoading,
-            selectPlan,
-            isYearly
-        }
-    }
 }
 </script>

@@ -1,4 +1,5 @@
 import AuthService from '@/infra/services/auth.service'
+import axios from 'axios';
 export default ({
     async auth({ dispatch, commit }, params) {
         return await AuthService.auth(params).then((resp) => {
