@@ -82,10 +82,10 @@ export default {
     user: null
   },
   setup(props) {
-    const store = useStore();
-    const loading = ref(false);
+    const store         = useStore();
+    const loading       = ref(false);
     const openDropdowns = ref([]);
-    const user = props?.user;
+    const user          = props?.user;
 
     const logout = () => {
       loading.value = true;

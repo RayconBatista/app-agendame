@@ -35,6 +35,7 @@
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
+import { usePermissionStore } from '@/store/permissions';
 
 export default {
     name: 'Permissions',
@@ -42,11 +43,11 @@ export default {
         Breadcrumb
     },
     setup() {
-        const store = useStore();
-        const permissions = computed(() => store.state.permission.permissions);
+        const permissionStore = usePermissionStore();
+        const permissions = computed(() => permissionStore.permissions);
 
         onMounted(() => {
-            store.dispatch('getPermissions')
+            permissionStore.getPermissions()
         })
  
         return {

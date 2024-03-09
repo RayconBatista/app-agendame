@@ -3,8 +3,8 @@
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start">
-                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
-                        type="button"
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
+                        aria-controls="logo-sidebar" type="button"
                         class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
@@ -15,7 +15,8 @@
                         </svg>
                     </button>
                     <router-link to="/" class="flex ml-2 md:mr-24">
-                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" :alt="title" :title="title" />
+                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" :alt="title"
+                            :title="title" />
                         <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                             {{ title }}
                         </span>
@@ -24,9 +25,11 @@
                 <div class="flex items-center">
                     <div class="items-center ml-3">
                         <div class="flex items-center">
-                            <router-link v-if="!user?.has_subscription" :to="{ name: 'site.pricing' }"
+                            <router-link v-if="!user?.has_subscription || (user?.role?.name != 'super-admin')"
+                                :to="{ name: 'site.pricing' }"
                                 class="mr-4 px-3 py-1.5 text-sm dark:text-white bg-blue-600 hover:bg-blue-700 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                 role="menuitem">UPGRADE</router-link>
+
 
                             <button type="button" @click="openProfileMenu"
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
@@ -81,13 +84,13 @@ import { useRouter } from 'vue-router';
 export default {
     name: 'Navbar',
     setup() {
-        const openUserMenu  = ref(false);
-        const authStore     = useAuthStore()
-        const router        = useRouter();
-        const currentPage   = ref('');
-        const meStore       = useMeStore()
-        const user          = computed(() => meStore?.user);
-        const title         = import.meta.env.VITE_APP_NAME;
+        const openUserMenu = ref(false);
+        const authStore = useAuthStore()
+        const router = useRouter();
+        const currentPage = ref('');
+        const meStore = useMeStore()
+        const user = computed(() => meStore?.user);
+        const title = import.meta.env.VITE_APP_NAME;
 
 
         onMounted(() => {

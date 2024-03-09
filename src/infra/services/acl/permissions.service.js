@@ -4,7 +4,7 @@ export default class PermissionsService extends BaseService {
     static async permissions(params) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .get('admin/permissions', params)
+                .get('api/admin/permissions', params)
                 .then(response => {
                     resolve(response)
                 })

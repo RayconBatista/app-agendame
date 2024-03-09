@@ -35,6 +35,7 @@
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
+import { useRoleStore } from '@/store/roles';
 
 export default {
     name: 'Roles',
@@ -42,11 +43,12 @@ export default {
         Breadcrumb
     },
     setup() {
-        const store = useStore();
-        const roles = computed(() => store.state.role.roles);
+        const roleStore = useRoleStore();
+
+        const roles = computed(() => roleStore.roles);
 
         onMounted(() => {
-            store.dispatch('getRoles')
+            roleStore.getRoles()
         })
  
         return {

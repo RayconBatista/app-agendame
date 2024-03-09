@@ -42,32 +42,33 @@
 <script>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
-import Modal from '@/ui/components/Main/Modal.vue';
 import { notify } from '@kyvg/vue3-notification';
+import Modal from '@/ui/components/Main/Modal.vue';
+import { useEstablishmentStore } from '@/store/establishment';
 export default {
     name: 'CreateEstablishment',
     components: {
         Modal
     },
     setup() {
-        const modalCreateEstablishmentRef = ref(null);
-        const store = useStore();
-        const form = ref({
-            name: '',
-            city: '',
-            state: '',
-            cep: '',
-            email: '',
-            phone: '',
+        const modalCreateEstablishmentRef   = ref(null);
+        const establishmentStore            = useEstablishmentStore();
+        const form  =   ref({
+            name    : '',
+            city    : '',
+            state   : '',
+            cep     : '',
+            email   : '',
+            phone   : '',
         });
 
         const newEstablishment = () => {
-            store.dispatch('saveEstablishment', form.value)
+            establishmentStore.saveEstablishment(form.value)
                 .then(() => {
                     notify({
-                        title: "Deu certo",
-                        text: "Estabelecimento registrado com sucesso",
-                        type: "success",
+                        title   : "Deu certo",
+                        text    : "Estabelecimento registrado com sucesso",
+                        type    : "success",
                     });
                     modalCreateEstablishmentRef.value?.hideModal();
                 })
@@ -79,7 +80,8 @@ export default {
                     });
                 })
                 .finally(() => {
-                    store.dispatch('getEstablishments')
+                    // store.dispatch('getEstablishments')
+                    establishmentStore.getEstablishments();
                 })
         }
 

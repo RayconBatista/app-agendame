@@ -43,6 +43,7 @@
 import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import { useServiceStore } from '@/store/services';
 
 export default {
     name: 'Services',
@@ -50,11 +51,11 @@ export default {
         Breadcrumb
     },
     setup() {
-        const store = useStore();
-        const services = computed(() => store.state.service.services)
+        const serviceStore  = useServiceStore();
+        const services      = computed(() => serviceStore.services)
 
         onMounted(() => {
-            store.dispatch('getServices');
+            serviceStore.getServices();
         })
 
         return {

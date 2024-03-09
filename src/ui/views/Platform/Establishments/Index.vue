@@ -44,11 +44,13 @@
     </div>
 </template>
 <script>
-import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
-import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import { computed, onMounted } from 'vue';
 import CreateEstablishment from './Create.vue'
+import Breadcrumb from '@/ui/components/Main/Breadcrumb.vue';
 import formatPhoneNumber from '@/ui/utils/formatPhoneNumber.js';
+import { useEstablishmentStore } from '@/store/establishment';
+
 export default {
     name: 'Establishments',
     components: {
@@ -57,11 +59,13 @@ export default {
     },
     setup() {
         const store = useStore();
-        const establishments = computed(() => store.state.establishment.establishments);
+        const establishmentStore = useEstablishmentStore();
+        const establishments = computed(() => establishmentStore.establishments);
         const responsible = computed(() => store.getters.getResponsible)
 
         onMounted(() => {
-            store.dispatch('getEstablishments')
+            establishmentStore.getEstablishments();
+            // store.dispatch('getEstablishments')
         });
 
 

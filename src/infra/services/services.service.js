@@ -4,7 +4,7 @@ export default class ServicesService extends BaseService {
     static async services(params) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .get('admin/services', params)
+                .get('api/admin/services', params)
                 .then(response => {
                     resolve(response)
                 })

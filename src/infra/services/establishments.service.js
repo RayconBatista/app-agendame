@@ -4,7 +4,7 @@ export default class EstablishmentsService extends BaseService {
     static async establishments(params) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-                .get('admin/establishments', params)
+                .get('api/admin/establishments', params)
                 .then(response => {
                     resolve(response)
                 })
@@ -16,7 +16,7 @@ export default class EstablishmentsService extends BaseService {
     static async storeEstablishment(params) {
         return new Promise((resolve, reject) => {
             this.request({ auth: true })
-            .post('admin/establishments', params)
+            .post('api/admin/establishments', params)
             .then(response => {
                 resolve(response)
             })
